@@ -6,6 +6,7 @@ import { scaffoldCommand } from './cli/scaffold.js';
 import { statusCommand } from './cli/status.js';
 import { runCommand } from './cli/run.js';
 import { guideCommand } from './cli/guide.js';
+import { injectCommand } from './cli/inject.js';
 
 const program = new Command();
 
@@ -28,6 +29,15 @@ program
   .option('-n, --name <name>', 'Project name')
   .option('-o, --output <dir>', 'Output directory', '.')
   .action(scaffoldCommand);
+
+program
+  .command('inject')
+  .alias('i')
+  .description('Inject Agent Harness support into an existing project')
+  .option('-n, --name <name>', 'Override project name')
+  .option('-f, --force', 'Overwrite existing AI instruction files without prompting')
+  .option('--skip-init', 'Skip harness initialization (only generate AI instruction files)')
+  .action(injectCommand);
 
 program
   .command('guide')
