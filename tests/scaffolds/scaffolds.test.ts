@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { ScaffoldRegistry, ReactScaffold, ExpressScaffold, NextjsScaffold } from '../../src/scaffolds/index.js';
+import { ScaffoldRegistry, ReactScaffold, NestjsScaffold } from '../../src/scaffolds/index.js';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -18,10 +18,9 @@ describe('ScaffoldRegistry', () => {
     const registry = new ScaffoldRegistry('/tmp');
     registry.registerDefaults();
 
-    expect(registry.count).toBe(3);
+    expect(registry.count).toBe(2);
     expect(registry.has('react')).toBe(true);
-    expect(registry.has('express')).toBe(true);
-    expect(registry.has('nextjs')).toBe(true);
+    expect(registry.has('nestjs')).toBe(true);
   });
 
   it('should list scaffold configs', () => {
@@ -29,10 +28,9 @@ describe('ScaffoldRegistry', () => {
     registry.registerDefaults();
 
     const configs = registry.getConfigs();
-    expect(configs.length).toBe(3);
+    expect(configs.length).toBe(2);
     expect(configs.map(c => c.name)).toContain('react');
-    expect(configs.map(c => c.name)).toContain('express');
-    expect(configs.map(c => c.name)).toContain('nextjs');
+    expect(configs.map(c => c.name)).toContain('nestjs');
   });
 });
 
@@ -72,9 +70,26 @@ describe('ReactScaffold', () => {
     expect(scaffold.config.type).toBe('frontend');
     expect(scaffold.config.options.length).toBeGreaterThan(0);
   });
+
+  it('should generate AI agent instruction files', async () => {
+    const scaffold = new ReactScaffold();
+    const result = await scaffold.generate(TEST_OUTPUT, {
+      projectName: 'test-react-ai',
+      useTailwind: true,
+      useRouter: true,
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.filesCreated).toContain('CLAUDE.md');
+    expect(result.filesCreated).toContain('.github/copilot-instructions.md');
+
+    const projectDir = path.join(TEST_OUTPUT, 'test-react-ai');
+    expect(await fs.pathExists(path.join(projectDir, 'CLAUDE.md'))).toBe(true);
+    expect(await fs.pathExists(path.join(projectDir, '.github', 'copilot-instructions.md'))).toBe(true);
+  });
 });
 
-describe('ExpressScaffold', () => {
+describe('NestjsScaffold', () => {
   beforeEach(async () => {
     await fs.ensureDir(TEST_OUTPUT);
   });
@@ -83,77 +98,64 @@ describe('ExpressScaffold', () => {
     await fs.remove(TEST_OUTPUT);
   });
 
-  it('should generate an Express API project', async () => {
-    const scaffold = new ExpressScaffold();
+  it('should generate a Nest.js API project', async () => {
+    const scaffold = new NestjsScaffold();
     const result = await scaffold.generate(TEST_OUTPUT, {
-      projectName: 'test-api',
+      projectName: 'test-nestjs-api',
       useDatabase: 'prisma-postgres',
       useAuth: true,
+      useSwagger: true,
       useDocker: true,
     });
 
     expect(result.success).toBe(true);
     expect(result.filesCreated).toContain('package.json');
-    expect(result.filesCreated).toContain('src/index.ts');
-    expect(result.filesCreated).toContain('src/app.ts');
+    expect(result.filesCreated).toContain('nest-cli.json');
+    expect(result.filesCreated).toContain('src/main.ts');
+    expect(result.filesCreated).toContain('src/app.module.ts');
+    expect(result.filesCreated).toContain('src/app.controller.ts');
+    expect(result.filesCreated).toContain('src/app.service.ts');
+    expect(result.filesCreated).toContain('src/health/health.module.ts');
+    expect(result.filesCreated).toContain('src/health/health.controller.ts');
+    expect(result.filesCreated).toContain('src/auth/auth.module.ts');
+    expect(result.filesCreated).toContain('src/auth/auth.service.ts');
+    expect(result.filesCreated).toContain('src/auth/auth.controller.ts');
+    expect(result.filesCreated).toContain('src/auth/guards/jwt-auth.guard.ts');
+    expect(result.filesCreated).toContain('src/auth/dto/login.dto.ts');
+    expect(result.filesCreated).toContain('prisma/schema.prisma');
+    expect(result.filesCreated).toContain('src/prisma/prisma.module.ts');
+    expect(result.filesCreated).toContain('src/prisma/prisma.service.ts');
     expect(result.filesCreated).toContain('Dockerfile');
     expect(result.filesCreated).toContain('docker-compose.yaml');
-    expect(result.filesCreated).toContain('src/middleware/auth.ts');
+    expect(result.filesCreated).toContain('CLAUDE.md');
+    expect(result.filesCreated).toContain('.github/copilot-instructions.md');
   });
 
-  it('should skip auth and docker when disabled', async () => {
-    const scaffold = new ExpressScaffold();
+  it('should skip auth, swagger, database, docker when disabled', async () => {
+    const scaffold = new NestjsScaffold();
     const result = await scaffold.generate(TEST_OUTPUT, {
-      projectName: 'test-minimal-api',
+      projectName: 'test-nestjs-minimal',
       useDatabase: 'none',
       useAuth: false,
+      useSwagger: false,
       useDocker: false,
     });
 
     expect(result.success).toBe(true);
+    expect(result.filesCreated).toContain('src/main.ts');
+    expect(result.filesCreated).toContain('src/app.module.ts');
     expect(result.filesCreated).not.toContain('Dockerfile');
-    expect(result.filesCreated).not.toContain('src/middleware/auth.ts');
-  });
-});
-
-describe('NextjsScaffold', () => {
-  beforeEach(async () => {
-    await fs.ensureDir(TEST_OUTPUT);
-  });
-
-  afterEach(async () => {
-    await fs.remove(TEST_OUTPUT);
-  });
-
-  it('should generate a Next.js fullstack project', async () => {
-    const scaffold = new NextjsScaffold();
-    const result = await scaffold.generate(TEST_OUTPUT, {
-      projectName: 'test-nextjs',
-      useTailwind: true,
-      useDatabase: 'prisma-postgres',
-      useAuth: true,
-    });
-
-    expect(result.success).toBe(true);
-    expect(result.filesCreated).toContain('package.json');
-    expect(result.filesCreated).toContain('src/app/layout.tsx');
-    expect(result.filesCreated).toContain('src/app/page.tsx');
-    expect(result.filesCreated).toContain('src/app/api/health/route.ts');
-    expect(result.filesCreated).toContain('prisma/schema.prisma');
-    expect(result.filesCreated).toContain('tailwind.config.ts');
-  });
-
-  it('should generate without optional features', async () => {
-    const scaffold = new NextjsScaffold();
-    const result = await scaffold.generate(TEST_OUTPUT, {
-      projectName: 'test-nextjs-minimal',
-      useTailwind: false,
-      useDatabase: 'none',
-      useAuth: false,
-    });
-
-    expect(result.success).toBe(true);
-    expect(result.filesCreated).not.toContain('tailwind.config.ts');
+    expect(result.filesCreated).not.toContain('src/auth/auth.module.ts');
     expect(result.filesCreated).not.toContain('prisma/schema.prisma');
+    // AI instructions should always be generated
+    expect(result.filesCreated).toContain('CLAUDE.md');
+    expect(result.filesCreated).toContain('.github/copilot-instructions.md');
+  });
+
+  it('should have correct scaffold config', () => {
+    const scaffold = new NestjsScaffold();
+    expect(scaffold.config.name).toBe('nestjs');
+    expect(scaffold.config.type).toBe('backend');
+    expect(scaffold.config.options.length).toBeGreaterThan(0);
   });
 });

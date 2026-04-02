@@ -65,6 +65,11 @@ export class ReactScaffold extends BaseScaffold {
       // .eslintrc.cjs
       await this.writeFile(projectDir, '.eslintrc.cjs', this.getEslintConfig(), filesCreated);
 
+      // AI agent instructions
+      await this.writeFile(projectDir, 'CLAUDE.md', this.getClaudeMd(projectName, useTailwind, useRouter), filesCreated);
+      await fs.ensureDir(path.join(projectDir, '.github'));
+      await this.writeFile(projectDir, '.github/copilot-instructions.md', this.getCopilotInstructions(projectName, useTailwind, useRouter), filesCreated);
+
       commands.push(`cd ${projectName} && npm install`);
       commands.push('npm run dev');
 
@@ -293,6 +298,90 @@ coverage/
   parser: '@typescript-eslint/parser',
   rules: {},
 };
+`;
+  }
+
+  // ─── AI Agent Instructions ──────────────────────────────────
+
+  private getClaudeMd(projectName: string, tailwind: boolean, router: boolean): string {
+    return `# CLAUDE.md — AI Agent Instructions for ${projectName}
+
+This file provides context for Claude Code and other AI coding agents working on this project.
+
+## Project Overview
+
+- **Framework**: React 18 + TypeScript + Vite
+${tailwind ? '- **Styling**: Tailwind CSS' : ''}
+${router ? '- **Routing**: React Router v6' : ''}
+
+## Project Structure
+
+\`\`\`
+src/
+├── main.tsx           # React entry point
+├── App.tsx            # Root component
+├── components/        # Reusable UI components
+├── hooks/             # Custom React hooks
+├── pages/             # Page-level components
+├── styles/            # Global styles
+└── utils/             # Helper functions
+\`\`\`
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| \`npm run dev\` | Start Vite dev server (http://localhost:5173) |
+| \`npm run build\` | Build for production |
+| \`npm run preview\` | Preview production build |
+| \`npm run lint\` | Run ESLint |
+
+## Conventions
+
+- Use functional components with hooks
+- Place reusable components in \`src/components/\`
+- Place page components in \`src/pages/\`
+- Custom hooks in \`src/hooks/\` (prefix with \`use\`)
+- Use path alias \`@/\` to import from \`src/\`
+${tailwind ? '- Use Tailwind utility classes; avoid custom CSS when possible' : ''}
+${router ? '- Add new routes in `App.tsx` using `<Route>` components' : ''}
+`;
+  }
+
+  private getCopilotInstructions(projectName: string, tailwind: boolean, router: boolean): string {
+    return `# Copilot Instructions for ${projectName}
+
+## Project Context
+
+React 18 + TypeScript + Vite frontend application.
+
+## Code Style
+
+- Use TypeScript strict mode
+- Prefer functional components over class components
+- Use named exports for components
+- Use \`interface\` for component props
+
+## Component Structure
+
+\`\`\`tsx
+interface MyComponentProps {
+  title: string;
+  onAction: () => void;
+}
+
+export function MyComponent({ title, onAction }: MyComponentProps) {
+  return <div onClick={onAction}>{title}</div>;
+}
+\`\`\`
+
+## Rules
+
+- No inline styles — use ${tailwind ? 'Tailwind classes' : 'CSS modules'}
+- Keep components small and focused
+- Extract reusable logic into custom hooks
+${router ? '- Use `useNavigate()` for programmatic navigation' : ''}
+- Validate props with TypeScript interfaces
 `;
   }
 }

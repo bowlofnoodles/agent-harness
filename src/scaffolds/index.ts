@@ -1,13 +1,13 @@
 import { BaseScaffold } from './base-scaffold.js';
 import { ReactScaffold } from './react-app.js';
-import { ExpressScaffold } from './express-api.js';
-import { NextjsScaffold } from './nextjs-app.js';
+import { NestjsScaffold } from './nestjs-api.js';
 import type { ScaffoldConfig } from '../types.js';
 
 /**
  * ScaffoldRegistry - Central registry for all available scaffolds.
  *
  * Provides discovery and management of scaffold generators.
+ * The default stack is React (frontend) + Nest.js (backend).
  * New scaffolds can be registered dynamically.
  */
 export class ScaffoldRegistry {
@@ -26,8 +26,7 @@ export class ScaffoldRegistry {
   /** Register all built-in default scaffolds */
   registerDefaults(): void {
     this.register(new ReactScaffold());
-    this.register(new ExpressScaffold());
-    this.register(new NextjsScaffold());
+    this.register(new NestjsScaffold());
   }
 
   /** Get a scaffold by name */
@@ -63,5 +62,4 @@ export class ScaffoldRegistry {
 
 export { BaseScaffold } from './base-scaffold.js';
 export { ReactScaffold } from './react-app.js';
-export { ExpressScaffold } from './express-api.js';
-export { NextjsScaffold } from './nextjs-app.js';
+export { NestjsScaffold } from './nestjs-api.js';

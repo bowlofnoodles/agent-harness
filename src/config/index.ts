@@ -14,7 +14,7 @@ const HarnessConfigSchema = z.object({
   logLevel: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   memoryPath: z.string().default('.harness/memory.json'),
   maxConcurrentTasks: z.number().min(1).max(10).default(3),
-  defaultScaffold: z.string().default('nextjs'),
+  defaultScaffold: z.string().default('nestjs'),
   validation: z.object({
     lintOnSave: z.boolean().default(true),
     testOnCommit: z.boolean().default(true),
@@ -35,7 +35,7 @@ export function getDefaultConfig(projectRoot: string): HarnessConfig {
     logLevel: 'info',
     memoryPath: path.join(projectRoot, '.harness', 'memory.json'),
     maxConcurrentTasks: 3,
-    defaultScaffold: 'nextjs',
+    defaultScaffold: 'nestjs',
     validation: {
       lintOnSave: true,
       testOnCommit: true,

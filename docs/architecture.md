@@ -2,38 +2,48 @@
 
 ## Overview
 
-Agent Harness is a full-stack project scaffolding tool built on the **harness-engineering** architecture pattern. This pattern enables continuous, autonomous development workflows by combining an agent loop, task queue, persistent memory, extensible tools, and automated validation.
+Agent Harness is a full-stack project scaffolding CLI tool built on the **harness-engineering** architecture pattern. It generates production-ready **React + Nest.js** projects that are pre-configured for AI-assisted development with Claude Code and GitHub Copilot.
 
 ## System Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                        CLI Interface                         │
-│              (init / scaffold / status / run)                 │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │                    Agent (Core)                       │   │
-│  │                                                      │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌────────────┐  │   │
-│  │  │ Task Queue   │  │   Memory    │  │  Config    │  │   │
-│  │  │ (Priority +  │  │ (Persistent │  │  (YAML +   │  │   │
-│  │  │  Dependencies│  │  Knowledge) │  │   Zod)     │  │   │
-│  │  └─────────────┘  └─────────────┘  └────────────┘  │   │
-│  └──────────────────────────────────────────────────────┘   │
-│                           │                                  │
-│              ┌────────────┼────────────┐                     │
-│              ▼            ▼            ▼                      │
-│  ┌──────────────┐ ┌─────────────┐ ┌──────────────┐         │
-│  │ Tool Registry │ │  Scaffold   │ │  Validation  │         │
-│  │              │ │  Registry   │ │  Pipeline    │         │
-│  │ • filesystem │ │             │ │              │         │
-│  │ • shell      │ │ • react     │ │ • lint       │         │
-│  │ • git        │ │ • express   │ │ • test       │         │
-│  │ • (custom)   │ │ • nextjs    │ │ • security   │         │
-│  └──────────────┘ └─────────────┘ └──────────────┘         │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                         CLI Interface                            │
+│          (init / scaffold / guide / status / run)                │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    Agent (Core Engine)                    │   │
+│  │                                                          │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌────────────────┐  │   │
+│  │  │ Task Queue   │  │   Memory    │  │    Config      │  │   │
+│  │  │ (Priority +  │  │ (Persistent │  │  (.harness.yaml│  │   │
+│  │  │  Dependencies│  │  Knowledge) │  │    + Zod)      │  │   │
+│  │  │  + Retries)  │  │             │  │                │  │   │
+│  │  └─────────────┘  └─────────────┘  └────────────────┘  │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                           │                                      │
+│              ┌────────────┼────────────┐                         │
+│              ▼            ▼            ▼                          │
+│  ┌──────────────┐ ┌─────────────┐ ┌──────────────┐             │
+│  │ Tool Registry │ │  Scaffold   │ │  Validation  │             │
+│  │              │ │  Registry   │ │  Pipeline    │             │
+│  │ • filesystem │ │             │ │              │             │
+│  │ • shell      │ │ • react     │ │ • lint       │             │
+│  │ • git        │ │ • nestjs    │ │ • test       │             │
+│  │ • (custom)   │ │             │ │ • security   │             │
+│  └──────────────┘ └─────────────┘ └──────────────┘             │
+│                         │                                        │
+│                         ▼                                        │
+│              ┌──────────────────────┐                            │
+│              │  AI Agent Support    │                            │
+│              │                      │                            │
+│              │ • CLAUDE.md          │                            │
+│              │ • copilot-instructions│                           │
+│              │ • guide command      │                            │
+│              └──────────────────────┘                            │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ## Core Concepts
@@ -77,13 +87,28 @@ Plugin-based tool architecture:
 
 ### 5. Scaffold System
 
-Project template generators:
-- **ReactScaffold** – React + TypeScript + Vite (with Tailwind, Router, Zustand/Redux options)
-- **ExpressScaffold** – Express + TypeScript REST API (with Prisma, JWT Auth, Docker options)
-- **NextjsScaffold** – Next.js 14 App Router fullstack (with Tailwind, Prisma, NextAuth options)
-- Each scaffold produces production-ready project structure
+Project template generators using **React + Nest.js** stack:
 
-### 6. Validation Pipeline
+- **ReactScaffold** – React 18 + TypeScript + Vite (with Tailwind, Router, Zustand/Redux options)
+- **NestjsScaffold** – Nest.js + TypeScript modular API (with Prisma, JWT Auth, Swagger, Docker options)
+
+Each scaffold generates:
+- Production-ready project structure
+- `CLAUDE.md` – AI instructions for Claude Code
+- `.github/copilot-instructions.md` – AI instructions for GitHub Copilot
+
+### 6. AI Agent Integration
+
+Every generated project is AI-agent-ready:
+
+| File | Purpose | Read by |
+|------|---------|---------|
+| `CLAUDE.md` | Project context, structure, conventions, commands | Claude Code |
+| `.github/copilot-instructions.md` | Code style, architecture rules, patterns | GitHub Copilot |
+
+The `agent-harness guide` command provides step-by-step workflows for each AI agent.
+
+### 7. Validation Pipeline
 
 Automated quality assurance:
 - **LintValidator** – ESLint with JSON output parsing
@@ -91,14 +116,14 @@ Automated quality assurance:
 - **SecurityValidator** – npm audit for vulnerability detection
 - Configurable per-project via `.harness.yaml`
 
-### 7. Configuration
+### 8. Configuration
 
 YAML-based configuration with Zod schema validation:
 ```yaml
 projectName: my-project
 logLevel: info
 maxConcurrentTasks: 3
-defaultScaffold: nextjs
+defaultScaffold: nestjs
 validation:
   lintOnSave: true
   testOnCommit: true
@@ -119,6 +144,7 @@ agent-harness/
 │   ├── cli/                  # CLI command handlers
 │   │   ├── init.ts           # Initialize harness
 │   │   ├── scaffold.ts       # Generate projects
+│   │   ├── guide.ts          # AI agent workflow guides
 │   │   ├── status.ts         # Show agent status
 │   │   └── run.ts            # Start agent loop
 │   ├── core/                 # Harness engine
@@ -133,9 +159,8 @@ agent-harness/
 │   │   └── index.ts          # Tool registry
 │   ├── scaffolds/            # Project generators
 │   │   ├── base-scaffold.ts  # Scaffold interface
-│   │   ├── react-app.ts      # React template
-│   │   ├── express-api.ts    # Express template
-│   │   ├── nextjs-app.ts     # Next.js template
+│   │   ├── react-app.ts      # React + Vite template
+│   │   ├── nestjs-api.ts     # Nest.js API template
 │   │   └── index.ts          # Scaffold registry
 │   ├── validation/           # Quality assurance
 │   │   └── index.ts          # Validation pipeline
@@ -148,6 +173,61 @@ agent-harness/
 ├── docs/                     # Documentation
 │   └── architecture.md       # This file
 ├── .harness.yaml             # Project config
+└── package.json
+```
+
+## Generated Project Structure
+
+### React Frontend
+
+```
+frontend/
+├── src/
+│   ├── main.tsx              # Entry point
+│   ├── App.tsx               # Root component with routing
+│   ├── components/           # Reusable UI components
+│   ├── hooks/                # Custom React hooks
+│   ├── pages/                # Page-level components
+│   ├── styles/               # Global styles
+│   └── utils/                # Helpers
+├── CLAUDE.md                 # AI instructions (Claude Code)
+├── .github/
+│   └── copilot-instructions.md  # AI instructions (Copilot)
+├── vite.config.ts
+├── tsconfig.json
+└── package.json
+```
+
+### Nest.js Backend
+
+```
+backend/
+├── src/
+│   ├── main.ts               # Bootstrap + Swagger
+│   ├── app.module.ts          # Root module
+│   ├── app.controller.ts
+│   ├── app.service.ts
+│   ├── health/                # Health check module
+│   ├── auth/                  # JWT authentication module
+│   │   ├── auth.module.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.controller.ts
+│   │   ├── guards/
+│   │   └── dto/
+│   ├── prisma/                # Database module
+│   │   ├── prisma.module.ts
+│   │   └── prisma.service.ts
+│   └── common/                # Shared utilities
+│       ├── filters/
+│       └── interceptors/
+├── prisma/
+│   └── schema.prisma
+├── CLAUDE.md                  # AI instructions (Claude Code)
+├── .github/
+│   └── copilot-instructions.md  # AI instructions (Copilot)
+├── Dockerfile
+├── docker-compose.yaml
+├── nest-cli.json
 └── package.json
 ```
 
@@ -186,7 +266,7 @@ class MyScaffold extends BaseScaffold {
   };
 
   async generate(targetDir, options) {
-    // Generate files
+    // Generate files + CLAUDE.md + copilot-instructions.md
     return this.successResult(files, commands, nextSteps);
   }
 }
@@ -197,9 +277,10 @@ agent.scaffolds.register(new MyScaffold());
 
 ## Design Principles
 
-1. **Extensible**: Everything is pluggable – tools, scaffolds, validators
-2. **Type-safe**: Full TypeScript with Zod schema validation
-3. **Persistent**: Memory survives across sessions for continuous improvement
-4. **Observable**: Event-driven with comprehensive logging
-5. **Production-ready**: Generated projects include best practices (security headers, rate limiting, error handling, Docker)
-6. **Testable**: All core components are unit-testable with no side effects
+1. **AI-Native**: Every generated project includes AI agent instruction files
+2. **Extensible**: Everything is pluggable – tools, scaffolds, validators
+3. **Type-safe**: Full TypeScript with Zod schema validation
+4. **Persistent**: Memory survives across sessions for continuous improvement
+5. **Observable**: Event-driven with comprehensive logging
+6. **Production-ready**: Generated projects include security, validation, Docker, Swagger
+7. **Testable**: All core components are unit-testable with no side effects
