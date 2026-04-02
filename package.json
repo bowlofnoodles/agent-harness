@@ -1,0 +1,55 @@
+{
+  "name": "agent-harness",
+  "version": "1.0.0",
+  "description": "A full-stack project scaffolding tool based on harness-engineering architecture for continuous autonomous development",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "agent-harness": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src/ --ext .ts",
+    "lint:fix": "eslint src/ --ext .ts --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "scaffold",
+    "harness",
+    "agent",
+    "fullstack",
+    "cli"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.19.37",
+    "@types/uuid": "^9.0.8",
+    "chalk": "^5.6.2",
+    "commander": "^12.1.0",
+    "eventemitter3": "^5.0.4",
+    "fs-extra": "^11.3.4",
+    "glob": "^10.5.0",
+    "inquirer": "^9.3.8",
+    "ora": "^8.2.0",
+    "typescript": "^5.9.3",
+    "uuid": "^9.0.1",
+    "winston": "^3.19.0",
+    "yaml": "^2.8.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.9",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "tsx": "^4.21.0",
+    "vitest": "^1.6.1"
+  }
+}
