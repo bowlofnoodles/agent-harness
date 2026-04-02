@@ -1,4 +1,4 @@
-# @noodles/agent-harness
+# @bowlofnoodles/agent-harness
 
 A full-stack project scaffolding CLI tool powered by the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, etc.).
 
@@ -74,7 +74,7 @@ A full-stack project scaffolding CLI tool powered by the **harness-engineering**
 
 ```bash
 # Install globally
-npm install -g @noodles/agent-harness
+npm install -g @bowlofnoodles/agent-harness
 
 # Or install dependencies for local development
 npm install
