@@ -28,6 +28,14 @@
     "type": "git",
     "url": "https://github.com/bowlofnoodles/agent-harness"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
