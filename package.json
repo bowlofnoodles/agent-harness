@@ -1,5 +1,5 @@
 {
-  "name": "agent-harness",
+  "name": "@noodles/agent-harness",
   "version": "1.0.0",
   "description": "A full-stack project scaffolding tool based on harness-engineering architecture for continuous autonomous development",
   "type": "module",
