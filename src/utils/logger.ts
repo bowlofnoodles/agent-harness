@@ -2,9 +2,9 @@ import winston from 'winston';
 
 const { combine, timestamp, printf, colorize } = winston.format;
 
-const logFormat = printf(({ level, message, timestamp: ts, ...meta }) => {
+const logFormat = printf(({ level, message, timestamp: logTimestamp, ...meta }) => {
   const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
-  return `${ts} [${level}]${metaStr}: ${message}`;
+  return `${logTimestamp} [${level}]${metaStr}: ${message}`;
 });
 
 export function createLogger(level: string = 'info'): winston.Logger {

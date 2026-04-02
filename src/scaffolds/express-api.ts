@@ -21,10 +21,10 @@ export class ExpressScaffold extends BaseScaffold {
   };
 
   async generate(targetDir: string, options: Record<string, unknown>): Promise<ScaffoldResult> {
-    const projectName = options.projectName as string ?? 'my-api';
-    const useDatabase = options.useDatabase as string ?? 'prisma-postgres';
-    const useAuth = options.useAuth as boolean ?? true;
-    const useDocker = options.useDocker as boolean ?? true;
+    const projectName = (options.projectName as string | undefined) ?? 'my-api';
+    const useDatabase = (options.useDatabase as string | undefined) ?? 'prisma-postgres';
+    const useAuth = (options.useAuth as boolean | undefined) ?? true;
+    const useDocker = (options.useDocker as boolean | undefined) ?? true;
 
     const projectDir = path.join(targetDir, projectName);
     const filesCreated: string[] = [];

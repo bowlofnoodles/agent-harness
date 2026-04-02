@@ -82,14 +82,11 @@ export async function loadConfig(projectRoot: string): Promise<HarnessConfig> {
 /** Save configuration to .harness.yaml */
 export async function saveConfig(config: HarnessConfig): Promise<void> {
   const configPath = path.join(config.projectRoot, CONFIG_FILENAME);
-  const { projectRoot, ...serializable } = config;
+  const { projectRoot: _projectRoot, ...serializable } = config;
 
   await fs.ensureDir(path.dirname(configPath));
   const yamlContent = stringifyYaml(serializable, { indent: 2 });
   await fs.writeFile(configPath, yamlContent, 'utf-8');
-
-  // Also suppress the unused variable warning
-  void projectRoot;
 }
 
 /** Initialize configuration directory and files */

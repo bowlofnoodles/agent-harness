@@ -1,6 +1,7 @@
 import type { MemoryEntry } from '../types.js';
 import { logger } from '../utils/logger.js';
 import fs from 'fs-extra';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -44,9 +45,7 @@ export class Memory {
   async save(): Promise<void> {
     if (!this.dirty) return;
 
-    await fs.ensureDir(await fs.realpath(this.filePath).catch(() =>
-      this.filePath.substring(0, this.filePath.lastIndexOf('/')),
-    ));
+    await fs.ensureDir(path.dirname(this.filePath));
 
     const data = Array.from(this.entries.values());
     await fs.writeFile(this.filePath, JSON.stringify(data, null, 2), 'utf-8');

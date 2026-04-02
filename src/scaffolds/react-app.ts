@@ -21,9 +21,9 @@ export class ReactScaffold extends BaseScaffold {
   };
 
   async generate(targetDir: string, options: Record<string, unknown>): Promise<ScaffoldResult> {
-    const projectName = options.projectName as string ?? 'my-react-app';
-    const useTailwind = options.useTailwind as boolean ?? true;
-    const useRouter = options.useRouter as boolean ?? true;
+    const projectName = (options.projectName as string | undefined) ?? 'my-react-app';
+    const useTailwind = (options.useTailwind as boolean | undefined) ?? true;
+    const useRouter = (options.useRouter as boolean | undefined) ?? true;
 
     const projectDir = path.join(targetDir, projectName);
     const filesCreated: string[] = [];

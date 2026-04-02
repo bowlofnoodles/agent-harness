@@ -26,10 +26,14 @@ export class GitTool extends BaseTool {
         return this.shell.execute({ command: 'git status --porcelain' });
       case 'add':
         return this.shell.execute({ command: `git add ${params.files ?? '.'}` });
-      case 'commit':
+      case 'commit': {
+        const message = (params.message as string)
+          .replace(/\\/g, '\\\\')
+          .replace(/"/g, '\\"');
         return this.shell.execute({
-          command: `git commit -m "${(params.message as string).replace(/"/g, '\\"')}"`,
+          command: `git commit -m "${message}"`,
         });
+      }
       case 'branch':
         return this.shell.execute({ command: `git checkout -b ${params.name}` });
       case 'log':
