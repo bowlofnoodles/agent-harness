@@ -1,6 +1,6 @@
 # @bowlofnoodles/agent-harness
 
-A full-stack project scaffolding CLI tool powered by the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, etc.).
+A full-stack project scaffolding CLI tool built on the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, and others).
 
 ## Tech Stack
 
@@ -16,7 +16,7 @@ A full-stack project scaffolding CLI tool powered by the **harness-engineering**
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
 │                                                                      │
-│   developer / AI agent (Claude Code, Copilot)                        │
+│   Developer / AI Agent (Claude Code, Copilot)                       │
 │        │                                                             │
 │        ▼                                                             │
 │   ┌──────────────┐                                                   │
@@ -39,10 +39,10 @@ A full-stack project scaffolding CLI tool powered by the **harness-engineering**
 │ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐             │
 │ │  Tools   │ │ Scaffolds│ │Validation│ │ AI Agent     │             │
 │ │          │ │          │ │ Pipeline │ │ Instructions │             │
-│ │•filesys  │ │• react   │ │          │ │              │             │
-│ │•shell    │ │• nestjs  │ │• lint    │ │• CLAUDE.md   │             │
-│ │•git      │ │          │ │• test    │ │• copilot-    │             │
-│ │•(custom) │ │          │ │• security│ │  instructions│             │
+│ │• filesys │ │• react   │ │          │ │              │             │
+│ │• shell   │ │• nestjs  │ │• lint    │ │• CLAUDE.md   │             │
+│ │• git     │ │          │ │• test    │ │• copilot-    │             │
+│ │• custom  │ │          │ │• security│ │  instructions│             │
 │ └──────────┘ └──────────┘ └──────────┘ └──────────────┘             │
 │                    │                                                 │
 │                    ▼                                                 │
@@ -52,18 +52,18 @@ A full-stack project scaffolding CLI tool powered by the **harness-engineering**
 │   │  frontend/          backend/             │                       │
 │   │  ├── src/            ├── src/            │                       │
 │   │  │   ├── App.tsx     │   ├── main.ts     │                       │
-│   │  │   ├── components/ │   ├── app.module   │                       │
+│   │  │   ├── components/ │   ├── app.module  │                       │
 │   │  │   └── pages/      │   ├── auth/       │                       │
 │   │  ├── CLAUDE.md       │   ├── health/     │                       │
 │   │  └── .github/        │   ├── prisma/     │                       │
 │   │     copilot-         │   ├── CLAUDE.md   │                       │
 │   │     instructions.md  │   └── .github/    │                       │
 │   │                      │      copilot-     │                       │
-│   │                      │      instructions │                       │
+│   │                      │      instructions  │                       │
 │   └─────────────────────────────────────────┘                        │
 │                    │                                                 │
 │                    ▼                                                 │
-│          AI agent reads CLAUDE.md /                                  │
+│          AI Agent reads CLAUDE.md /                                  │
 │          copilot-instructions.md and                                 │
 │          builds features continuously                                │
 │                                                                      │
@@ -164,7 +164,7 @@ agent-harness run --once    # Process one task and exit
 
 ## AI Agent Workflow
 
-Agent Harness generates projects that are **AI-agent-ready** out of the box. Every scaffolded project includes instruction files that popular AI coding tools read automatically.
+Agent Harness generates projects that are **AI-agent-ready** out of the box. Every scaffolded project includes instruction files that AI coding tools read automatically.
 
 ### With Claude Code
 
@@ -206,15 +206,14 @@ cd frontend && code .
 
 ```
   ┌──────────┐     scaffold      ┌──────────────────┐
-  │  agent-  │ ───────────────►  │  Generated        │
-  │  harness │                   │  Project          │
+  │  agent-  │ ───────────────►  │  Generated       │
+  │  harness │                   │  Project         │
   │  CLI     │                   │  ├── CLAUDE.md    │
   └──────────┘                   │  ├── .github/     │
                                  │  │   copilot-     │
                                  │  │   instructions │
        ┌─────────────────────────┤  └── src/...      │
-       │                         └──────────────────┘
-       ▼                                  │
+       ▼                         └──────────────────┘
   ┌──────────┐                            │
   │ AI Agent │◄───────────────────────────┘
   │          │  reads instructions
