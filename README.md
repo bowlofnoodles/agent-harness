@@ -1,6 +1,14 @@
 # @bowlofnoodles/agent-harness
 
-A full-stack project scaffolding CLI tool built on the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, and others).
+<!-- Badges -->
+![npm](https://img.shields.io/npm/v/@bowlofnoodles/agent-harness?style=flat-square)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square)
+![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react)
+![NestJS](https://img.shields.io/badge/NestJS-10-ea2845?style=flat-square&logo=nestjs)
+![Prisma](https://img.shields.io/badge/Prisma-5.0-2a2a2a?style=flat-square&logo=prisma)
+
+> A full-stack project scaffolding CLI tool built on the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, and others).
 
 ## Tech Stack
 
@@ -96,7 +104,7 @@ cd backend  && claude    # AI reads CLAUDE.md for context
 
 ## CLI Commands
 
-### `agent-harness init`
+### `init` — Initialize Project
 
 Initialize Agent Harness configuration in the current directory.
 
@@ -107,7 +115,7 @@ agent-harness init -n my-project
 
 Creates `.harness.yaml` config and `.harness/` directory.
 
-### `agent-harness scaffold`
+### `scaffold` — Generate Project
 
 Generate a new project scaffold with interactive prompts.
 
@@ -132,7 +140,7 @@ Each generated project includes:
 - `CLAUDE.md` — AI instructions for Claude Code
 - `.github/copilot-instructions.md` — AI instructions for GitHub Copilot
 
-### `agent-harness guide`
+### `guide` — AI Agent Guide
 
 Show AI agent workflow guides.
 
@@ -145,7 +153,7 @@ agent-harness guide --agent claude-code
 agent-harness guide --agent copilot-cli
 ```
 
-### `agent-harness status`
+### `status` — Check Status
 
 Show agent status, registered tools, scaffolds, and queue stats.
 
@@ -153,7 +161,7 @@ Show agent status, registered tools, scaffolds, and queue stats.
 agent-harness status
 ```
 
-### `agent-harness run`
+### `run` — Start Agent Loop
 
 Start the agent loop for continuous task processing.
 
