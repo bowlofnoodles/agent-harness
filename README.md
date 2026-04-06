@@ -1,14 +1,18 @@
 # Agent Harness
 
-A CLI tool for scaffolding full-stack projects optimized for AI coding agents (Claude Code, GitHub Copilot).
+> A CLI tool for scaffolding full-stack projects optimized for AI coding agents (Claude Code, GitHub Copilot).
 
-## What It Does
+[![npm version](https://img.shields.io/npm/v/@bowlofnoodles/agent-harness.svg)](https://www.npmjs.com/package/@bowlofnoodles/agent-harness)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+
+## Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
 │   agent-harness scaffold -t react -n frontend              │
-│   agent-harness scaffold -t nestjs -n backend             │
+│   agent-harness scaffold -t nestjs -n backend              │
 │                                                             │
 │                        ▼                                    │
 │   ┌──────────────────────────────────────────────────────┐  │
@@ -54,7 +58,7 @@ cd backend  && claude
 
 ## CLI Commands
 
-### `agent-harness scaffold`
+### `scaffold` - Generate Project
 
 Generate a new project scaffold.
 
@@ -76,7 +80,7 @@ Each generated project includes AI instruction files:
 - `CLAUDE.md` — instructions for Claude Code
 - `.github/copilot-instructions.md` — instructions for GitHub Copilot
 
-### `agent-harness init`
+### `init` - Initialize Configuration
 
 Initialize Agent Harness configuration in the current directory.
 
@@ -87,7 +91,7 @@ agent-harness init -n my-project
 
 Creates `.harness.yaml` config and `.harness/` directory.
 
-### `agent-harness guide`
+### `guide` - Show Workflow Guides
 
 Show AI agent workflow guides.
 
@@ -97,7 +101,7 @@ agent-harness guide --agent claude-code       # Detailed guide
 agent-harness guide --agent copilot-cli
 ```
 
-### `agent-harness status`
+### `status` - Check Agent Status
 
 Show agent status, registered tools, scaffolds, and queue stats.
 
@@ -105,7 +109,7 @@ Show agent status, registered tools, scaffolds, and queue stats.
 agent-harness status
 ```
 
-### `agent-harness run`
+### `run` - Start Agent Loop
 
 Start the agent loop for continuous task processing.
 
@@ -162,6 +166,21 @@ git:
   autoCommit: true
   commitPrefix: "[harness]"
   branch: main
+```
+
+## Project Structure
+
+```
+src/
+├── cli/          # CLI command implementations
+├── core/         # Core agent and task queue
+├── scaffolds/    # Project templates (React, NestJS)
+├── tools/        # Git, Shell, FileSystem tools
+├── types.ts      # TypeScript type definitions
+└── utils/        # Logger, errors, utilities
+
+tests/            # Test suites
+docs/             # Architecture documentation
 ```
 
 ## Architecture
