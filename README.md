@@ -1,264 +1,112 @@
 # @bowlofnoodles/agent-harness
 
-<!-- Badges -->
-![npm](https://img.shields.io/npm/v/@bowlofnoodles/agent-harness?style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square)
-![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react)
-![NestJS](https://img.shields.io/badge/NestJS-10-ea2845?style=flat-square&logo=nestjs)
-![Prisma](https://img.shields.io/badge/Prisma-5.0-2a2a2a?style=flat-square&logo=prisma)
+[![npm version](https://img.shields.io/npm/v/@bowlofnoodles/agent-harness?style=flat-square)](https://www.npmjs.com/package/@bowlofnoodles/agent-harness)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square)](https://www.typescriptlang.org/)
 
-> A full-stack project scaffolding CLI tool built on the **harness-engineering** architecture — designed for continuous development with AI coding agents (Claude Code, GitHub Copilot, and others).
+A CLI tool that scaffolds full-stack projects pre-configured for AI coding agents (Claude Code, GitHub Copilot). Each generated project includes AI instruction files (`CLAUDE.md`, `copilot-instructions.md`) so agents understand the codebase from day one.
+
+## Features
+
+- **AI-Ready Scaffolds** — Generate React or NestJS projects with built-in AI context files
+- **Harness Engine** — Task queue, persistent memory, and validation pipeline for autonomous development
+- **Tool System** — File system, shell, and git operations extensible at runtime
+- **Validation Pipeline** — Lint, test, and security checks on every change
+- **Zero Config** — Works out of the box, configure via `.harness.yaml` when needed
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | React 18 + TypeScript + Vite |
-| **Backend** | Nest.js + TypeScript |
-| **Database** | Prisma + PostgreSQL |
-| **AI Agents** | Claude Code · GitHub Copilot |
-
-## Architecture Flow
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                                                                      │
-│   Developer / AI Agent (Claude Code, Copilot)                       │
-│        │                                                             │
-│        ▼                                                             │
-│   ┌──────────────┐                                                   │
-│   │  agent-harness│  CLI                                             │
-│   │  init / scaffold / guide / status / run                          │
-│   └──────┬───────┘                                                   │
-│          │                                                           │
-│   ┌──────┴──────────────────────────────────────┐                    │
-│   │              Agent Core Engine               │                   │
-│   │  ┌──────────┐ ┌────────┐ ┌───────────────┐  │                   │
-│   │  │TaskQueue │ │ Memory │ │    Config      │  │                   │
-│   │  │(priority,│ │(persist│ │  (.harness.yaml│  │                   │
-│   │  │ deps,    │ │ facts) │ │   + Zod)      │  │                   │
-│   │  │ retries) │ │        │ │               │  │                   │
-│   │  └──────────┘ └────────┘ └───────────────┘  │                   │
-│   └──────┬──────────────────────────────────────┘                    │
-│          │                                                           │
-│   ┌──────┴──────┬──────────────┬─────────────────┐                   │
-│   ▼             ▼              ▼                 ▼                   │
-│ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐             │
-│ │  Tools   │ │ Scaffolds│ │Validation│ │ AI Agent     │             │
-│ │          │ │          │ │ Pipeline │ │ Instructions │             │
-│ │• filesys │ │• react   │ │          │ │              │             │
-│ │• shell   │ │• nestjs  │ │• lint    │ │• CLAUDE.md   │             │
-│ │• git     │ │          │ │• test    │ │• copilot-    │             │
-│ │• custom  │ │          │ │• security│ │  instructions│             │
-│ └──────────┘ └──────────┘ └──────────┘ └──────────────┘             │
-│                    │                                                 │
-│                    ▼                                                 │
-│   ┌─────────────────────────────────────────┐                        │
-│   │       Generated Project (monorepo)       │                       │
-│   │                                          │                       │
-│   │  frontend/          backend/             │                       │
-│   │  ├── src/            ├── src/            │                       │
-│   │  │   ├── App.tsx     │   ├── main.ts     │                       │
-│   │  │   ├── components/ │   ├── app.module  │                       │
-│   │  │   └── pages/      │   ├── auth/       │                       │
-│   │  ├── CLAUDE.md       │   ├── health/     │                       │
-│   │  └── .github/        │   ├── prisma/     │                       │
-│   │     copilot-         │   ├── CLAUDE.md   │                       │
-│   │     instructions.md  │   └── .github/    │                       │
-│   │                      │      copilot-     │                       │
-│   │                      │      instructions  │                       │
-│   └─────────────────────────────────────────┘                        │
-│                    │                                                 │
-│                    ▼                                                 │
-│          AI Agent reads CLAUDE.md /                                  │
-│          copilot-instructions.md and                                 │
-│          builds features continuously                                │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
+| CLI | TypeScript + Commander.js |
+| Frontend Scaffold | React 18 + Vite + TypeScript |
+| Backend Scaffold | NestJS + Prisma + PostgreSQL |
 
 ## Quick Start
 
 ```bash
-# Install globally
+# Install
 npm install -g @bowlofnoodles/agent-harness
 
-# Or install dependencies for local development
-npm install
-
-# Build the CLI tool
-npm run build
-
-# Initialize harness config in your project
+# Initialize harness in your project
 npx agent-harness init
 
-# Generate a fullstack project (React frontend + Nest.js backend)
+# Scaffold a full-stack project
 npx agent-harness scaffold -t react -n frontend
 npx agent-harness scaffold -t nestjs -n backend
 
-# Open with an AI coding agent
-cd frontend && claude    # or open in VS Code with Copilot
-cd backend  && claude    # AI reads CLAUDE.md for context
+# Open with an AI agent
+cd frontend && claude   # reads CLAUDE.md automatically
+cd backend  && claude
 ```
 
 ## CLI Commands
 
-### `init` — Initialize Project
+| Command | Description |
+|---------|-------------|
+| `agent-harness init` | Initialize harness config (`.harness.yaml`) |
+| `agent-harness scaffold -t <type> -n <name>` | Generate project scaffold |
+| `agent-harness guide` | Show AI agent workflow guides |
+| `agent-harness status` | Display agent status, tools, and queue stats |
+| `agent-harness run` | Start the agent loop for continuous task processing |
 
-Initialize Agent Harness configuration in the current directory.
+### Scaffold Templates
 
-```bash
-agent-harness init
-agent-harness init -n my-project
+| Template | Description |
+|----------|-------------|
+| `react` | React 18 + Vite + TypeScript + Tailwind + React Router + Zustand |
+| `nestjs` | NestJS + TypeScript + Prisma + JWT + Swagger + Docker |
+
+## Project Structure
+
 ```
-
-Creates `.harness.yaml` config and `.harness/` directory.
-
-### `scaffold` — Generate Project
-
-Generate a new project scaffold with interactive prompts.
-
-```bash
-# Interactive mode
-agent-harness scaffold
-
-# Non-interactive mode
-agent-harness scaffold -t react -n frontend
-agent-harness scaffold -t nestjs -n backend
-
-# Specify output directory
-agent-harness scaffold -t nestjs -n api -o ./projects
-```
-
-| Template | Type | Description |
-|----------|------|-------------|
-| `react` | Frontend | React 18 + Vite + TypeScript + Tailwind + React Router + Zustand |
-| `nestjs` | Backend | Nest.js + TypeScript + Prisma + JWT Auth + Swagger + Docker |
-
-Each generated project includes:
-- `CLAUDE.md` — AI instructions for Claude Code
-- `.github/copilot-instructions.md` — AI instructions for GitHub Copilot
-
-### `guide` — AI Agent Guide
-
-Show AI agent workflow guides.
-
-```bash
-# Overview of all supported AI agents
-agent-harness guide
-
-# Detailed guide for a specific agent
-agent-harness guide --agent claude-code
-agent-harness guide --agent copilot-cli
-```
-
-### `status` — Check Status
-
-Show agent status, registered tools, scaffolds, and queue stats.
-
-```bash
-agent-harness status
-```
-
-### `run` — Start Agent Loop
-
-Start the agent loop for continuous task processing.
-
-```bash
-agent-harness run           # Continuous mode
-agent-harness run --once    # Process one task and exit
+my-project/
+├── frontend/                 # React scaffold
+│   ├── src/
+│   ├── CLAUDE.md            # AI context for Claude Code
+│   └── .github/
+│       └── copilot-instructions.md  # AI context for Copilot
+├── backend/                  # NestJS scaffold
+│   ├── src/
+│   ├── prisma/
+│   ├── CLAUDE.md
+│   └── .github/
+│       └── copilot-instructions.md
+└── .harness.yaml            # Harness configuration
 ```
 
 ## AI Agent Workflow
 
-Agent Harness generates projects that are **AI-agent-ready** out of the box. Every scaffolded project includes instruction files that AI coding tools read automatically.
+After scaffolding, AI agents read the instruction files automatically:
 
-### With Claude Code
+**Claude Code** reads `CLAUDE.md` which contains:
+- Project structure and conventions
+- Available npm scripts and commands
+- How to add new modules
+- Code style rules
+
+**GitHub Copilot** reads `.github/copilot-instructions.md` which contains:
+- Architecture patterns
+- Code style guidelines
+- Common development workflows
 
 ```bash
-# 1. Generate a project
-agent-harness scaffold -t nestjs -n backend
-
-# 2. Open with Claude Code
+# Example: Ask Claude to build a feature
 cd backend && claude
+> "Add a users CRUD module with Prisma"
 
-# Claude automatically reads CLAUDE.md and understands:
-# - Project structure & conventions
-# - Available commands
-# - How to add new modules
-# - Code style rules
-
-# 3. Ask Claude to build features
-# "Add a users CRUD module with Prisma model"
-# "Write unit tests for the auth service"
-# "Create a products endpoint with pagination"
-```
-
-### With GitHub Copilot
-
-```bash
-# 1. Generate a project
-agent-harness scaffold -t react -n frontend
-
-# 2. Open in VS Code (Copilot reads .github/copilot-instructions.md)
-cd frontend && code .
-
-# 3. Use Copilot Chat
+# Example: Ask Copilot via VS Code
 # @workspace "How do I add a new page?"
-# @workspace "Create a user profile component"
-# "Explain this React hook"
-```
-
-### Workflow Diagram
-
-```
-  ┌──────────┐     scaffold      ┌──────────────────┐
-  │  agent-  │ ───────────────►  │  Generated       │
-  │  harness │                   │  Project         │
-  │  CLI     │                   │  ├── CLAUDE.md    │
-  └──────────┘                   │  ├── .github/     │
-                                 │  │   copilot-     │
-                                 │  │   instructions │
-       ┌─────────────────────────┤  └── src/...      │
-       ▼                         └──────────────────┘
-  ┌──────────┐                            │
-  │ AI Agent │◄───────────────────────────┘
-  │          │  reads instructions
-  │• Claude  │  understands structure
-  │  Code    │  builds features
-  │• Copilot │  runs tests
-  └──────────┘
-```
-
-## Development
-
-```bash
-# Run the CLI in development mode
-npm run dev
-
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Lint
-npm run lint
-
-# Build
-npm run build
 ```
 
 ## Configuration
 
-Agent Harness stores its config in `.harness.yaml`:
+Create `.harness.yaml` in your project root:
 
 ```yaml
 projectName: my-project
 logLevel: info
 maxConcurrentTasks: 3
-defaultScaffold: nestjs
 validation:
   lintOnSave: true
   testOnCommit: true
@@ -266,12 +114,30 @@ validation:
 git:
   autoCommit: true
   commitPrefix: "[harness]"
-  branch: main
 ```
 
 ## Architecture
 
 See [docs/architecture.md](docs/architecture.md) for the full architecture documentation.
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Build
+npm run build
+
+# Run CLI locally
+npm run dev -- init -n my-project
+
+# Test
+npm test
+
+# Lint
+npm run lint
+```
 
 ## License
 
